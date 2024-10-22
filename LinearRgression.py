@@ -38,6 +38,10 @@ def LinearRegression(X,y,
 if __name__ == "__main__":
     X_train = torch.FloatTensor([[1,2], [3,2], [3,7], [1,1], [1,0]])
     y_train = torch.FloatTensor([[4], [8], [23], [1], [-2]])
-    LinearRegression(X_train, y_train)
+    w,b = LinearRegression(X_train, y_train)
+    
+    X_test = torch.FloatTensor([[5,10]])
+    result = X_test @ w + b
+    print(result.item())  
     
     
