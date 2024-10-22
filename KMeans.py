@@ -6,7 +6,7 @@ from sklearn.datasets import make_blobs
 class KMeans:
     def __init__(self, n_clusters, max_iter = 100):
         self.n_clusters = n_clusters
-        self.max_iter = max_iter  # consider not converge
+        self.max_iter = max_iter  # consider not converging
         self.cluster_centers_ = None # centroid
         self.labels_ = None # cluster label
         self.inertia_ = None # result of cost function
