@@ -5,10 +5,10 @@ class Node:
     def __init__(self, gini, n_samples, n_samples_per_class, predicted_class):
         self.gini = gini
         self.n_samples = n_samples
-        self.n_samples_per_class = n_samples_per_class
+        self.n_samples_per_class = n_samples_per_class # Number of data per target
         self.predicted_class = predicted_class
         self.feature_index = -1
-        self.threshold = -1
+        self.threshold = -1 # criteria for division
         self.left = None
         self.right = None
         
@@ -45,19 +45,20 @@ class DecisionTreeClassifier():
         return X.columns[indices]
 
     def find_best_split(self, X, y):
-        # 가장 gini impurity를 낮게 해주는
+        # 가장 gini impurity를 낮게 해주는 feature & threshold 탐색
         n_samples, n_features = X.shape
-        best_gini = 1.0
+        best_gini = 1.0 # max로 init
         best_feature = -1
         best_threshold = -1
         for feature in range(n_features):
-            thresholds = np.unique(X[:, feature])
+            thresholds = np.unique(X[:, feature]) # set
             for threshold in thresholds:
                 left_indices = X[:, feature] < threshold # 기준보다 작은애들
                 right_indices = ~left_indices
                 left_gini = self.gini(y[left_indices])
                 right_gini = self.gini(y[right_indices])
                 gini = (left_gini * np.sum(left_indices) + right_gini * np.sum(right_indices)) / n_samples
+                # weighted avg
                 if gini < best_gini:
                     best_gini = gini
                     best_feature = feature
@@ -97,7 +98,7 @@ class DecisionTreeClassifier():
 
     def predict_one(self, x):
         node = self.tree
-        while node.left is not None:
+        while node.left is not None: # not leaf
             if x[node.feature_index] < node.threshold:
                 node = node.left
             else:
